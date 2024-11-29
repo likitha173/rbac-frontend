@@ -75,7 +75,7 @@ const Profile = () => {
 
         // Save image to Cloudinary
         const response = await fetch(
-          "https://api.cloudinary.com/v1_1/zinotrust/image/upload",
+          "https://api.cloudinary.com/v1_1/dml0arrct/image/upload",
           { method: "post", body: image }
         );
         const imgData = await response.json();
