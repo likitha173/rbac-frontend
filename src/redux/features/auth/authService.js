@@ -46,20 +46,6 @@ const updateUser = async (userData) => {
   return response.data;
 };
 
-// Send Verification Email
-const sendVerificationEmail = async () => {
-  const response = await axios.post(API_URL + "sendVerificationEmail");
-  return response.data.message;
-};
-
-// Verify User
-const verifyUser = async (verificationToken) => {
-  const response = await axios.patch(
-    `${API_URL}verifyUser/${verificationToken}`
-  );
-
-  return response.data.message;
-};
 
 // Change Password
 const changePassword = async (userData) => {
@@ -131,8 +117,6 @@ const authService = {
   getLoginStatus,
   getUser,
   updateUser,
-  sendVerificationEmail,
-  verifyUser,
   changePassword,
   forgotPassword,
   resetPassword,

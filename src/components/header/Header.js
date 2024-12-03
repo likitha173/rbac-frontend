@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { logout, RESET } from "../../redux/features/auth/authSlice";
 import { ShowOnLogin, ShowOnLogout } from "../protect/hiddenLink";
 import { UserName } from "../../pages/profile/Profile";
+import { AdminAuthorLink } from "../protect/hiddenLink";
 
 const activeLink = ({ isActive }) => (isActive ? "active" : "");
 
@@ -25,20 +26,45 @@ const Header = () => {
   };
 
   return (
-    <header className="header">
+    <header className="navbar">
       <nav>
         <div className="logo" onClick={goHome}>
-          <BiLogIn size={35} />
-          <span>AUTH:Z</span>
+          <span>RBAC</span>
         </div>
 
-        <ul className="home-links">
+        <ul className="nav-links">
+          {/* Show profile and logout for logged-in users */}
           <ShowOnLogin>
             <li className="--flex-center">
               <FaUserCircle size={20} />
               <UserName />
             </li>
+
+            {/* Profile link */}
+            <li>
+              <NavLink to="/profile" className={activeLink}>
+                Profile
+              </NavLink>
+            </li>
+
+            {/* Admin users link */}
+            <AdminAuthorLink>
+              <li>
+                <NavLink to="/users" className={activeLink}>
+                  Users
+                </NavLink>
+              </li>
+            </AdminAuthorLink>
+
+            {/* Logout button */}
+            <li>
+              <button onClick={logoutUser} className="--btn --btn-secondary">
+                Logout
+              </button>
+            </li>
           </ShowOnLogin>
+
+          {/* Show login link for logged-out users */}
           <ShowOnLogout>
             <li>
               <button className="--btn --btn-primary">
@@ -46,18 +72,6 @@ const Header = () => {
               </button>
             </li>
           </ShowOnLogout>
-          <ShowOnLogin>
-            <li>
-              <NavLink to="/profile" className={activeLink}>
-                Profile
-              </NavLink>
-            </li>
-            <li>
-              <button onClick={logoutUser} className="--btn --btn-secondary">
-                Logout
-              </button>
-            </li>
-          </ShowOnLogin>
         </ul>
       </nav>
     </header>

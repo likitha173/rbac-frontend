@@ -1,6 +1,5 @@
 import React from "react";
 import "./Home.scss";
-import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import loginImg from "../../assets/login.svg";
 import { Link } from "react-router-dom";
@@ -16,7 +15,7 @@ const Home = () => {
           </p>
           <p>
             Implement User Regisration, Login, Password Reset, Social Login,
-            User Permissions, Email Notifications etc.
+            User Permissions etc.
           </p>
           <div className="hero-buttons --flex-start">
             <button className="--btn --btn-danger">

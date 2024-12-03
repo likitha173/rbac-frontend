@@ -1,42 +1,100 @@
-.header {
-    background-color: #030b6b;
-    height: 7rem;
-  
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    // max-width: 1000px;
+.navbar {
+  background: #6a11cb;  /* Softer background color */
+  height: 80px;  /* Increased header height for more spacing */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Subtle shadow for depth */
+  transition: all 0.3s ease-in-out;
+
+  nav {
     width: 100%;
-    margin: 0 auto;
-    padding: 0 20px;
-  
-    & nav {
-      width: 100%;
-      max-width: 1000px;
+    max-width: 1200px;  /* Increased max width for better spacing */
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .logo {
       color: #fff;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-  
-      & > .logo {
-        color: #fff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 3rem;
-        cursor: pointer;
+      font-size: 2.5rem;
+      cursor: pointer;
+      letter-spacing: 2px;
+      font-weight: bold;
+      transition: color 0.3s ease-in-out;
+
+      &:hover {
+        color: #ff7f50;  /* Change color on hover */
       }
     }
   }
-  .home-links {
+
+  .nav-links {
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 20px;  /* Increased gap for better spacing between items */
+
     & li a {
       color: #fff;
+      font-size: 1.1rem;
+      font-weight: 500;
+      padding: 5px 10px;
+      transition: all 0.3s ease-in-out;
+
+      &:hover {
+        background-color: #ff7f50;  /* Add background color on hover */
+        border-radius: 5px;
+        color: #fff;
+      }
     }
+
     & > * {
       margin-left: 1rem;
       color: #fff;
     }
+
+    /* For buttons */
+    .--btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      font-weight: bold;
+    }
+
+    .--btn-primary {
+      background-color: #ff7f50;
+      color: #fff;
+      &:hover {
+        background-color: #ff6347;
+      }
+    }
+
+    .--btn-secondary {
+      background-color: #030b6b;
+      color: #fff;
+      &:hover {
+        background-color: #1e2d57;
+      }
+    }
   }
+
+  /* Responsive styling */
+  @media (max-width: 768px) {
+    .nav-links {
+      display: none;  /* Hide the links on small screens */
+    }
+
+    .logo {
+      font-size: 2rem;
+    }
+  }
+}

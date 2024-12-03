@@ -113,42 +113,6 @@ export const updateUser = createAsyncThunk(
   }
 );
 
-// send Verification Email
-export const sendVerificationEmail = createAsyncThunk(
-  "auth/sendVerificationEmail",
-  async (_, thunkAPI) => {
-    try {
-      return await authService.sendVerificationEmail();
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-
-// verify User
-export const verifyUser = createAsyncThunk(
-  "auth/verifyUser",
-  async (verificationToken, thunkAPI) => {
-    try {
-      return await authService.verifyUser(verificationToken);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-
 // change Password
 export const changePassword = createAsyncThunk(
   "auth/changePassword",
@@ -455,40 +419,6 @@ const authSlice = createSlice({
         toast.success("User Updated");
       })
       .addCase(updateUser.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        toast.error(action.payload);
-      })
-
-      // send Verification Email
-      .addCase(sendVerificationEmail.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(sendVerificationEmail.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.message = action.payload;
-        toast.success(action.payload);
-      })
-      .addCase(sendVerificationEmail.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        toast.error(action.payload);
-      })
-
-      // verify User
-      .addCase(verifyUser.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(verifyUser.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.message = action.payload;
-        toast.success(action.payload);
-      })
-      .addCase(verifyUser.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

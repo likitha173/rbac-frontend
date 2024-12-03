@@ -3,8 +3,7 @@ import { BiUserCheck, BiUserMinus, BiUserX } from "react-icons/bi";
 import { FaUsers } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  CALC_SUSPENDED_USER,
-  CALC_VERIFIED_USER,
+  CALC_SUSPENDED_USER
 } from "../../redux/features/auth/authSlice";
 import InfoBox from "../infoBox/InfoBox";
 import "./UsersStats.scss";
@@ -17,13 +16,11 @@ const icon4 = <BiUserX size={40} color="#fff" />;
 
 const UserStats = () => {
   const dispatch = useDispatch();
-  const { users, verifiedUsers, suspendedUsers } = useSelector(
+  const { users, suspendedUsers } = useSelector(
     (state) => state.auth
   );
-  const unverifiedUsers = users.length - verifiedUsers;
 
   useEffect(() => {
-    dispatch(CALC_VERIFIED_USER());
     dispatch(CALC_SUSPENDED_USER());
   }, [dispatch, users]);
 
@@ -31,30 +28,20 @@ const UserStats = () => {
     <div className="user-summary">
       <h3 className="--mt">User Stats</h3>
       <div className="info-summary">
-        <InfoBox
-          icon={icon1}
-          title={"Total Users"}
-          count={users.length}
-          bgColor="card1"
-        />
-        <InfoBox
-          icon={icon2}
-          title={"Verified Users"}
-          count={verifiedUsers}
-          bgColor="card2"
-        />
-        <InfoBox
-          icon={icon3}
-          title={"Unverified Users"}
-          count={unverifiedUsers}
-          bgColor="card3"
-        />
-        <InfoBox
-          icon={icon4}
-          title={"Suspended Users"}
-          count={suspendedUsers}
-          bgColor="card4"
-        />
+        <div className="stat-card card1">
+          <div className="card-icon">{icon1}</div>
+          <div className="card-content">
+            <h4>Total Users</h4>
+            <p>{users.length}</p>
+          </div>
+        </div>
+        <div className="stat-card card4">
+          <div className="card-icon">{icon4}</div>
+          <div className="card-content">
+            <h4>Suspended Users</h4>
+            <p>{suspendedUsers}</p>
+          </div>
+        </div>
       </div>
     </div>
   );

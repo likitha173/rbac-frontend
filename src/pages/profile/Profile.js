@@ -1,8 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import Card from "../../components/card/Card";
-import profileImg from "../../assets/avatarr.png";
 import "./Profile.scss";
-import PageMenu from "../../components/pageMenu/PageMenu";
 import useRedirectLoggedOutUser from "../../customHook/useRedirectLoggedOutUser";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,7 +10,9 @@ import {
 } from "../../redux/features/auth/authSlice";
 import Loader from "../../components/loader/Loader";
 import { toast } from "react-toastify";
-import Notification from "../../components/notification/Notification.js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faUpload, faKey } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const cloud_name = process.env.REACT_APP_CLOUD_NAME;
 const upload_preset = process.env.REACT_APP_UPLOAD_PRESET;
@@ -28,9 +28,11 @@ export const shortenText = (text, n) => {
 const Profile = () => {
   useRedirectLoggedOutUser("/login");
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // Initialize the navigate function here
   const { isLoading, isLoggedIn, isSuccess, message, user } = useSelector(
     (state) => state.auth
   );
+
   const initialState = {
     name: user?.name || "",
     email: user?.email || "",
@@ -38,8 +40,8 @@ const Profile = () => {
     bio: user?.bio || "",
     photo: user?.photo || "",
     role: user?.role || "",
-    isVerified: user?.isVerified || false,
   };
+
   const [profile, setProfile] = useState(initialState);
   const [profileImage, setProfileImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
@@ -107,7 +109,6 @@ const Profile = () => {
         photo: user.photo,
         bio: user.bio,
         role: user.role,
-        isVerified: user.isVerified,
       });
     }
   }, [user]);
@@ -116,9 +117,7 @@ const Profile = () => {
     <>
       <section>
         {isLoading && <Loader />}
-        {!profile.isVerified && <Notification />}
         <div className="container">
-          <PageMenu />
           <h2>Profile</h2>
           <div className="--flex-start profile">
             <Card cardClass={"card"}>
@@ -135,7 +134,9 @@ const Profile = () => {
                   </div>
                   <form onSubmit={saveProfile}>
                     <p>
-                      <label>Change Photo:</label>
+                      <label>
+                        <FontAwesomeIcon icon={faUpload} /> Change Photo:
+                      </label>
                       <input
                         type="file"
                         accept="image/*"
@@ -144,7 +145,9 @@ const Profile = () => {
                       />
                     </p>
                     <p>
-                      <label>Name:</label>
+                      <label>
+                        <FontAwesomeIcon icon={faEdit} /> Name:
+                      </label>
                       <input
                         type="text"
                         name="name"
@@ -153,7 +156,9 @@ const Profile = () => {
                       />
                     </p>
                     <p>
-                      <label>Email:</label>
+                      <label>
+                        <FontAwesomeIcon icon={faEdit} /> Email:
+                      </label>
                       <input
                         type="email"
                         name="email"
@@ -163,7 +168,9 @@ const Profile = () => {
                       />
                     </p>
                     <p>
-                      <label>Phone:</label>
+                      <label>
+                        <FontAwesomeIcon icon={faEdit} /> Phone:
+                      </label>
                       <input
                         type="text"
                         name="phone"
@@ -172,19 +179,37 @@ const Profile = () => {
                       />
                     </p>
                     <p>
-                      <label>Bio:</label>
+                      <label>
+                        <FontAwesomeIcon icon={faEdit} /> Bio:
+                      </label>
                       <textarea
                         name="bio"
                         value={profile?.bio}
                         onChange={handleInputChange}
                         cols="30"
-                        rows="10"
+                        rows="5"
                       ></textarea>
                     </p>
                     <button className="--btn --btn-primary --btn-block">
                       Update Profile
                     </button>
                   </form>
+
+                  <div className="changePassword">
+                    <div className="password-container">
+                      <p>
+                        <FontAwesomeIcon icon={faKey} className="icon" />
+                        Update your password for better security.
+                      </p>
+                      <button
+                        onClick={() => navigate("/ChangePassword")}
+                        className="btn password-btn"
+                      >
+                        Change Password
+                      </button>
+                    </div>
+                  </div>
+
                 </>
               )}
             </Card>
@@ -200,7 +225,7 @@ export const UserName = () => {
 
   const username = user?.name || "...";
 
-  return <p className="--color-white">Hi, {shortenText(username, 9)} |</p>;
+  return <p className="--color-white">{shortenText(username, 9)}</p>;
 };
 
 export default Profile;

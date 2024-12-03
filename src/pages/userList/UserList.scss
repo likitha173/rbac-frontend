@@ -1,78 +1,98 @@
 .user-list {
-    color: #333;
-    .table {
-      padding: 5px;
+  color: #333;
+  font-family: "Roboto", sans-serif;
+
+  .table {
+    padding: 20px;
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    table {
+      border-collapse: collapse;
       width: 100%;
-      overflow-x: auto;
-  
-      .search {
-        width: 100%;
-        max-width: 300px;
+      font-size: 1.4rem;
+      border-radius: 10px;
+      overflow: hidden;
+
+      thead {
+        background-color: #6200ea;
+        color: white;
+        text-transform: uppercase;
       }
-  
-      table {
-        border-collapse: collapse;
-        width: 100%;
-        font-size: 1.4rem;
-  
-        thead {
-          border-top: 2px solid var(--light-blue);
-          border-bottom: 2px solid var(--light-blue);
+
+      th,
+      td {
+        padding: 15px;
+        text-align: left;
+      }
+
+      tbody {
+        .role-badge {
+          padding: 5px 10px;
+          border-radius: 15px;
+          font-weight: bold;
+
+          &.admin {
+            background-color: #ff5722;
+            color: white;
+          }
+
+          &.user {
+            background-color: #4caf50;
+            color: white;
+          }
+
+          &.guest {
+            background-color: #9e9e9e;
+            color: white;
+          }
         }
-  
-        th {
-          border: 1px solid #eee;
-        }
-  
-        th,
-        td {
-          vertical-align: top;
-          text-align: left;
-          padding: 8px;
-  
-          &.icons {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            > * {
-              margin-right: 7px;
-              cursor: pointer;
-              vertical-align: middle;
-              align-self: center;
+
+        button {
+          padding: 8px 12px;
+          font-size: 0.9rem;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+
+          &.btn-danger {
+            background-color: #d32f2f;
+            color: white;
+
+            &:hover {
+              background-color: #b71c1c;
             }
           }
         }
-  
-        tr {
-          border-bottom: 1px solid #ccc;
-        }
-  
-        tr:nth-child(even) {
-          background-color: #fff;
-        }
-        tbody {
-          tr:hover {
-            // cursor: pointer;
-            background-color: rgba(121, 136, 149, 0.3);
-          }
-        }
       }
     }
   }
-  
-  .sort {
-    label {
-      font-size: 1.4rem;
-      font-weight: 500;
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+
+    .page-num {
+      padding: 8px 12px;
       margin: 0 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #6200ea;
+        color: white;
+      }
     }
-    select {
-      font-size: 1.6rem;
-      font-weight: 300;
-      padding: 4px 8px;
-      margin: 0 5px 0 0;
-      border: none;
-      border-bottom: 2px solid #777;
-      outline: none;
+
+    .activePage {
+      background-color: #6200ea;
+      color: white;
+      font-weight: bold;
     }
   }
+}

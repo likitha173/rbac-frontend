@@ -80,23 +80,8 @@ const Login = () => {
       {isLoading && <Loader />}
       <Card>
         <div className={styles.form}>
-          <div className="--flex-center">
-            <BiLogIn size={35} color="#999" />
-          </div>
           <h2>Login</h2>
-          <div className="--flex-center">
-            {/* <button className="--btn --btn-google">Login With Google
-            </button> */}
-            <GoogleLogin
-              onSuccess={googleLogin}
-              onError={() => {
-                console.log("Login Failed");
-                toast.error("Login Failed");
-              }}
-            />
-          </div>
-          <br />
-          <p className="--text-center --fw-bold">or</p>
+      
 
           <form onSubmit={loginUser}>
             <input

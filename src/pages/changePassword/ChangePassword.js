@@ -1,34 +1,25 @@
 import React, { useState } from "react";
-import Card from "../../components/card/Card";
-import profileImg from "../../assets/avatarr.png";
-import "./ChangePassword.scss";
-import PageMenu from "../../components/pageMenu/PageMenu";
-import PasswordInput from "../../components/passwordInput/PasswordInput";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import useRedirectLoggedOutUser from "../../customHook/useRedirectLoggedOutUser";
-import {
-  changePassword,
-  logout,
-  RESET,
-} from "../../redux/features/auth/authSlice";
-import { Spinner } from "../../components/loader/Loader";
-import { sendAutomatedEmail } from "../../redux/features/email/emailSlice";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash, faLock } from "@fortawesome/free-solid-svg-icons";
 
-const initialState = {
-  oldPassword: "",
-  password: "",
-  password2: "",
-};
+import "./ChangePassword.scss";
+import { changePassword, logout, RESET } from "../../redux/features/auth/authSlice";
+import { Spinner } from "../../components/loader/Loader";
 
 const ChangePassword = () => {
-  useRedirectLoggedOutUser("/login");
-  const [formData, setFormData] = useState(initialState);
-  const { oldPassword, password, password2 } = formData;
+  const [formData, setFormData] = useState({
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+  const [showPassword, setShowPassword] = useState(false);
 
-  const { isLoading, user } = useSelector((state) => state.auth);
+  const { oldPassword, newPassword, confirmPassword } = formData;
 
+  const { isLoading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -37,91 +28,115 @@ const ChangePassword = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const updatePassword = async (e) => {
     e.preventDefault();
 
-    if (!oldPassword || !password || !password2) {
+    // Validate form fields
+    if (!oldPassword || !newPassword || !confirmPassword) {
       return toast.error("All fields are required");
     }
 
-    if (password !== password2) {
+    if (newPassword !== confirmPassword) {
       return toast.error("Passwords do not match");
     }
 
+    // Prepare user data for password update
     const userData = {
       oldPassword,
-      password,
+      password: newPassword,
     };
 
-    const emailData = {
-      subject: "Password Changed - AUTH:Z",
-      send_to: user.email,
-      reply_to: "khatrilikitha@gmail.com",
-      template: "changePassword",
-      url: "/forgot",
-    };
+    try {
+      // Dispatch the changePassword action
+      await dispatch(changePassword(userData));
 
-    await dispatch(changePassword(userData));
-    await dispatch(sendAutomatedEmail(emailData));
-    await dispatch(logout());
-    await dispatch(RESET(userData));
-    navigate("/login");
+      // Logout the user after password change
+      await dispatch(logout());
+
+      // Reset the auth state
+      await dispatch(RESET());
+
+      // Redirect to login page
+      navigate("/login");
+    } catch (error) {
+      toast.error("Failed to change password");
+    }
   };
 
   return (
-    <>
-      <section>
-        <div className="container">
-          <PageMenu />
+    <section className="change-password">
+      <div className="container">
+        <div className="form-container">
           <h2>Change Password</h2>
-          <div className="--flex-start change-password">
-            <Card cardClass={"card"}>
-              <>
-                <form onSubmit={updatePassword}>
-                  <p>
-                    <label>Current Password</label>
-                    <PasswordInput
-                      placeholder="Old Password"
-                      name="oldPassword"
-                      value={oldPassword}
-                      onChange={handleInputChange}
-                    />
-                  </p>
-                  <p>
-                    <label>New Password:</label>
-                    <PasswordInput
-                      placeholder="Password"
-                      name="password"
-                      value={password}
-                      onChange={handleInputChange}
-                    />
-                  </p>
-                  <p>
-                    <label>confirm New Password:</label>
-                    <PasswordInput
-                      placeholder="Confirm Password"
-                      name="password2"
-                      value={password2}
-                      onChange={handleInputChange}
-                    />
-                  </p>
-                  {isLoading ? (
-                    <Spinner />
-                  ) : (
-                    <button
-                      type="submit"
-                      className="--btn --btn-danger --btn-block"
-                    >
-                      Change Password
-                    </button>
-                  )}
-                </form>
-              </>
-            </Card>
-          </div>
+          <form onSubmit={updatePassword}>
+            <div className="form-group">
+              <label>
+                <FontAwesomeIcon icon={faLock} /> Old Password
+              </label>
+              <input
+                type={showPassword ? "text" : "password"}
+                name="oldPassword"
+                placeholder="Enter old password"
+                value={oldPassword}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="form-group">
+              <label>
+                <FontAwesomeIcon icon={faLock} /> New Password
+              </label>
+              <input
+                type={showPassword ? "text" : "password"}
+                name="newPassword"
+                placeholder="Enter new password"
+                value={newPassword}
+                onChange={handleInputChange}
+              />
+              <small>Password must be at least 8 characters long.</small>
+            </div>
+            <div className="form-group">
+              <label>
+                <FontAwesomeIcon icon={faLock} /> Confirm Password
+              </label>
+              <input
+                type={showPassword ? "text" : "password"}
+                name="confirmPassword"
+                placeholder="Confirm new password"
+                value={confirmPassword}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="password-toggle">
+              <input
+                type="checkbox"
+                id="showPassword"
+                onChange={togglePasswordVisibility}
+              />
+              <label htmlFor="showPassword">
+                {showPassword ? (
+                  <FontAwesomeIcon icon={faEyeSlash} />
+                ) : (
+                  <FontAwesomeIcon icon={faEye} />
+                )}{" "}
+                Show Passwords
+              </label>
+            </div>
+
+            {isLoading ? (
+              <Spinner />
+            ) : (
+              <button type="submit" className="btn btn-primary">
+                Update Password
+              </button>
+            )}
+          </form>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 };
 
