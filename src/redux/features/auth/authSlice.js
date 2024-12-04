@@ -11,7 +11,7 @@ const initialState = {
   isSuccess: false,
   isLoading: false,
   message: "",
-  verifiedUsers: 0,
+  // verifiedUsers: 0,
   suspendedUsers: 0,
 };
 
@@ -282,20 +282,20 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.message = "";
     },
-    CALC_VERIFIED_USER(state, action) {
-      const array = [];
-      state.users.map((user) => {
-        const { isVerified } = user;
-        return array.push(isVerified);
-      });
-      let count = 0;
-      array.forEach((item) => {
-        if (item === true) {
-          count += 1;
-        }
-      });
-      state.verifiedUsers = count;
-    },
+    // CALC_VERIFIED_USER(state, action) {
+    //   const array = [];
+    //   state.users.map((user) => {
+    //     const { isVerified } = user;
+    //     return array.push(isVerified);
+    //   });
+    //   let count = 0;
+    //   array.forEach((item) => {
+    //     if (item === true) {
+    //       count += 1;
+    //     }
+    //   });
+    //   state.verifiedUsers = count;
+    // },
     CALC_SUSPENDED_USER(state, action) {
       const array = [];
       state.users.map((user) => {
@@ -584,7 +584,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { RESET, CALC_VERIFIED_USER, CALC_SUSPENDED_USER } =
+export const { RESET, CALC_SUSPENDED_USER } =
   authSlice.actions;
 
 export const selectIsLoggedIn = (state) => state.auth.isLoggedIn;

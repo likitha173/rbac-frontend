@@ -9,9 +9,9 @@ import PasswordInput from "../../components/passwordInput/PasswordInput";
 import { validateEmail } from "../../redux/features/auth/authService";
 import {
   login,
-  loginWithGoogle,
+  // loginWithGoogle,
   RESET,
-  sendLoginCode,
+  // sendLoginCode,
 } from "../../redux/features/auth/authSlice";
 import styles from "./auth.module.scss";
 import { GoogleLogin } from "@react-oauth/google";
@@ -60,20 +60,20 @@ const Login = () => {
       navigate("/profile");
     }
 
-    if (isError && twoFactor) {
-      dispatch(sendLoginCode(email));
-      navigate(`/loginWithCode/${email}`);
-    }
+    // if (isError && twoFactor) {
+    //   dispatch(sendLoginCode(email));
+    //   navigate(`/loginWithCode/${email}`);
+    // }
 
     dispatch(RESET());
   }, [isLoggedIn, isSuccess, dispatch, navigate, isError, twoFactor, email]);
 
-  const googleLogin = async (credentialResponse) => {
-    console.log(credentialResponse);
-    await dispatch(
-      loginWithGoogle({ userToken: credentialResponse.credential })
-    );
-  };
+  // const googleLogin = async (credentialResponse) => {
+  //   console.log(credentialResponse);
+  //   await dispatch(
+  //     loginWithGoogle({ userToken: credentialResponse.credential })
+  //   );
+  // };
 
   return (
     <div className={`container ${styles.auth}`}>
