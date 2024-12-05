@@ -4,18 +4,21 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { getUsers, upgradeUser } from "../../redux/features/auth/authSlice";
 import "./ChangeRole.scss";
+import {
+  EMAIL_RESET,
+  sendAutomatedEmail,
+} from "../../redux/features/email/emailSlice";
 
 const ChangeRole = ({ _id, email }) => {
   const [userRole, setUserRole] = useState("");
   const dispatch = useDispatch();
 
-  // Change User Role
+  // Change User role
   const changeRole = async (e) => {
     e.preventDefault();
 
     if (!userRole) {
       toast.error("Please select a role");
-      return;
     }
 
     const userData = {
@@ -23,8 +26,18 @@ const ChangeRole = ({ _id, email }) => {
       id: _id,
     };
 
+    const emailData = {
+      subject: "Account Role Changed - AUTH:Z",
+      send_to: email,
+      reply_to: "noreply@zino",
+      template: "changeRole",
+      url: "/login",
+    };
+
     await dispatch(upgradeUser(userData));
+    await dispatch(sendAutomatedEmail(emailData));
     await dispatch(getUsers());
+    dispatch(EMAIL_RESET());
   };
 
   return (

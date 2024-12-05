@@ -46,6 +46,20 @@ const updateUser = async (userData) => {
   return response.data;
 };
 
+// Send Verification Email
+const sendVerificationEmail = async () => {
+  const response = await axios.post(API_URL + "sendVerificationEmail");
+  return response.data.message;
+};
+
+// Verify User
+const verifyUser = async (verificationToken) => {
+  const response = await axios.patch(
+    `${API_URL}verifyUser/${verificationToken}`
+  );
+
+  return response.data.message;
+};
 
 // Change Password
 const changePassword = async (userData) => {
@@ -91,24 +105,24 @@ const upgradeUser = async (userData) => {
   return response.data.message;
 };
 
-// // Send Login Code
-// const sendLoginCode = async (email) => {
-//   const response = await axios.post(API_URL + `sendLoginCode/${email}`);
+// Send Login Code
+const sendLoginCode = async (email) => {
+  const response = await axios.post(API_URL + `sendLoginCode/${email}`);
 
-//   return response.data.message;
-// };
-// // Login With Code
-// const loginWithCode = async (code, email) => {
-//   const response = await axios.post(API_URL + `loginWithCode/${email}`, code);
+  return response.data.message;
+};
+// Login With Code
+const loginWithCode = async (code, email) => {
+  const response = await axios.post(API_URL + `loginWithCode/${email}`, code);
 
-//   return response.data;
-// };
-// // Login With Googlr
-// const loginWithGoogle = async (userToken) => {
-//   const response = await axios.post(API_URL + "google/callback", userToken);
+  return response.data;
+};
+// Login With Googlr
+const loginWithGoogle = async (userToken) => {
+  const response = await axios.post(API_URL + "google/callback", userToken);
 
-//   return response.data;
-// };
+  return response.data;
+};
 
 const authService = {
   register,
@@ -117,15 +131,17 @@ const authService = {
   getLoginStatus,
   getUser,
   updateUser,
+  sendVerificationEmail,
+  verifyUser,
   changePassword,
   forgotPassword,
   resetPassword,
   getUsers,
   deleteUser,
   upgradeUser,
-  // sendLoginCode,
-  // loginWithCode,
-  // loginWithGoogle,
+  sendLoginCode,
+  loginWithCode,
+  loginWithGoogle,
 };
 
 export default authService;
