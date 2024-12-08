@@ -11,7 +11,7 @@ const initialState = {
   isSuccess: false,
   isLoading: false,
   message: "",
-  verifiedUsers: 0,
+  // verifiedUsers: 0,
   suspendedUsers: 0,
 };
 
@@ -101,42 +101,6 @@ export const updateUser = createAsyncThunk(
   async (userData, thunkAPI) => {
     try {
       return await authService.updateUser(userData);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-
-// send Verification Email
-export const sendVerificationEmail = createAsyncThunk(
-  "auth/sendVerificationEmail",
-  async (_, thunkAPI) => {
-    try {
-      return await authService.sendVerificationEmail();
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-
-// verify User
-export const verifyUser = createAsyncThunk(
-  "auth/verifyUser",
-  async (verificationToken, thunkAPI) => {
-    try {
-      return await authService.verifyUser(verificationToken);
     } catch (error) {
       const message =
         (error.response &&
@@ -254,58 +218,58 @@ export const upgradeUser = createAsyncThunk(
   }
 );
 
-// sendLoginCode
-export const sendLoginCode = createAsyncThunk(
-  "auth/sendLoginCode",
-  async (email, thunkAPI) => {
-    try {
-      return await authService.sendLoginCode(email);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
+// // sendLoginCode
+// export const sendLoginCode = createAsyncThunk(
+//   "auth/sendLoginCode",
+//   async (email, thunkAPI) => {
+//     try {
+//       return await authService.sendLoginCode(email);
+//     } catch (error) {
+//       const message =
+//         (error.response &&
+//           error.response.data &&
+//           error.response.data.message) ||
+//         error.message ||
+//         error.toString();
+//       return thunkAPI.rejectWithValue(message);
+//     }
+//   }
+// );
 
-// loginWithCode
-export const loginWithCode = createAsyncThunk(
-  "auth/loginWithCode",
-  async ({ code, email }, thunkAPI) => {
-    try {
-      return await authService.loginWithCode(code, email);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
-// loginWithGoogle
-export const loginWithGoogle = createAsyncThunk(
-  "auth/loginWithGoogle",
-  async (userToken, thunkAPI) => {
-    try {
-      return await authService.loginWithGoogle(userToken);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
+// // loginWithCode
+// export const loginWithCode = createAsyncThunk(
+//   "auth/loginWithCode",
+//   async ({ code, email }, thunkAPI) => {
+//     try {
+//       return await authService.loginWithCode(code, email);
+//     } catch (error) {
+//       const message =
+//         (error.response &&
+//           error.response.data &&
+//           error.response.data.message) ||
+//         error.message ||
+//         error.toString();
+//       return thunkAPI.rejectWithValue(message);
+//     }
+//   }
+// );
+// // loginWithGoogle
+// export const loginWithGoogle = createAsyncThunk(
+//   "auth/loginWithGoogle",
+//   async (userToken, thunkAPI) => {
+//     try {
+//       return await authService.loginWithGoogle(userToken);
+//     } catch (error) {
+//       const message =
+//         (error.response &&
+//           error.response.data &&
+//           error.response.data.message) ||
+//         error.message ||
+//         error.toString();
+//       return thunkAPI.rejectWithValue(message);
+//     }
+//   }
+// );
 
 const authSlice = createSlice({
   name: "auth",
@@ -318,20 +282,20 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.message = "";
     },
-    CALC_VERIFIED_USER(state, action) {
-      const array = [];
-      state.users.map((user) => {
-        const { isVerified } = user;
-        return array.push(isVerified);
-      });
-      let count = 0;
-      array.forEach((item) => {
-        if (item === true) {
-          count += 1;
-        }
-      });
-      state.verifiedUsers = count;
-    },
+    // CALC_VERIFIED_USER(state, action) {
+    //   const array = [];
+    //   state.users.map((user) => {
+    //     const { isVerified } = user;
+    //     return array.push(isVerified);
+    //   });
+    //   let count = 0;
+    //   array.forEach((item) => {
+    //     if (item === true) {
+    //       count += 1;
+    //     }
+    //   });
+    //   state.verifiedUsers = count;
+    // },
     CALC_SUSPENDED_USER(state, action) {
       const array = [];
       state.users.map((user) => {
@@ -461,40 +425,6 @@ const authSlice = createSlice({
         toast.error(action.payload);
       })
 
-      // send Verification Email
-      .addCase(sendVerificationEmail.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(sendVerificationEmail.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.message = action.payload;
-        toast.success(action.payload);
-      })
-      .addCase(sendVerificationEmail.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        toast.error(action.payload);
-      })
-
-      // verify User
-      .addCase(verifyUser.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(verifyUser.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.message = action.payload;
-        toast.success(action.payload);
-      })
-      .addCase(verifyUser.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        toast.error(action.payload);
-      })
-
       // change Password
       .addCase(changePassword.pending, (state) => {
         state.isLoading = true;
@@ -596,65 +526,65 @@ const authSlice = createSlice({
         toast.error(action.payload);
       })
 
-      // send Login Code
-      .addCase(sendLoginCode.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(sendLoginCode.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.message = action.payload;
-        toast.success(action.payload);
-      })
-      .addCase(sendLoginCode.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        toast.error(action.payload);
-      })
+      // // send Login Code
+      // .addCase(sendLoginCode.pending, (state) => {
+      //   state.isLoading = true;
+      // })
+      // .addCase(sendLoginCode.fulfilled, (state, action) => {
+      //   state.isLoading = false;
+      //   state.isSuccess = true;
+      //   state.message = action.payload;
+      //   toast.success(action.payload);
+      // })
+      // .addCase(sendLoginCode.rejected, (state, action) => {
+      //   state.isLoading = false;
+      //   state.isError = true;
+      //   state.message = action.payload;
+      //   toast.error(action.payload);
+      // })
 
-      // loginWithCode
-      .addCase(loginWithCode.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(loginWithCode.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.isLoggedIn = true;
-        state.twoFactor = false;
-        state.user = action.payload;
-        toast.success(action.payload);
-      })
-      .addCase(loginWithCode.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.user = null;
-        toast.error(action.payload);
-      })
+      // // loginWithCode
+      // .addCase(loginWithCode.pending, (state) => {
+      //   state.isLoading = true;
+      // })
+      // .addCase(loginWithCode.fulfilled, (state, action) => {
+      //   state.isLoading = false;
+      //   state.isSuccess = true;
+      //   state.isLoggedIn = true;
+      //   state.twoFactor = false;
+      //   state.user = action.payload;
+      //   toast.success(action.payload);
+      // })
+      // .addCase(loginWithCode.rejected, (state, action) => {
+      //   state.isLoading = false;
+      //   state.isError = true;
+      //   state.message = action.payload;
+      //   state.user = null;
+      //   toast.error(action.payload);
+      // })
 
-      // loginWithGoogle
-      .addCase(loginWithGoogle.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(loginWithGoogle.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.isLoggedIn = true;
-        state.user = action.payload;
-        toast.success("Login Successful");
-      })
-      .addCase(loginWithGoogle.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-        state.user = null;
-        toast.error(action.payload);
-      });
+      // // loginWithGoogle
+      // .addCase(loginWithGoogle.pending, (state) => {
+      //   state.isLoading = true;
+      // })
+      // .addCase(loginWithGoogle.fulfilled, (state, action) => {
+      //   state.isLoading = false;
+      //   state.isSuccess = true;
+      //   state.isLoggedIn = true;
+      //   state.user = action.payload;
+      //   toast.success("Login Successful");
+      // })
+      // .addCase(loginWithGoogle.rejected, (state, action) => {
+      //   state.isLoading = false;
+      //   state.isError = true;
+      //   state.message = action.payload;
+      //   state.user = null;
+      //   toast.error(action.payload);
+      // });
   },
 });
 
-export const { RESET, CALC_VERIFIED_USER, CALC_SUSPENDED_USER } =
+export const { RESET, CALC_SUSPENDED_USER } =
   authSlice.actions;
 
 export const selectIsLoggedIn = (state) => state.auth.isLoggedIn;
