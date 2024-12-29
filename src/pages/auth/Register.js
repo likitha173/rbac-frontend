@@ -3,17 +3,13 @@ import { FaTimes } from "react-icons/fa";
 import { BsCheck2All } from "react-icons/bs";
 import { TiUserAddOutline } from "react-icons/ti";
 import { Link, useNavigate } from "react-router-dom";
-import Card from "../../components/card/Card";
-import PasswordInput from "../../components/passwordInput/PasswordInput";
-import styles from "./auth.module.scss";
 import { toast } from "react-toastify";
 import { validateEmail } from "../../redux/features/auth/authService";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  register,
-  RESET,
-} from "../../redux/features/auth/authSlice";
+import { register, RESET } from "../../redux/features/auth/authSlice";
 import Loader from "../../components/loader/Loader";
+import styles from "./auth.module.scss";
+import "./Register.scss";
 
 const initialState = {
   name: "",
@@ -102,7 +98,7 @@ const Register = () => {
       password,
     };
 
-    // console.log(userData);
+    // Register the user
     await dispatch(register(userData));
   };
 
@@ -115,92 +111,74 @@ const Register = () => {
   }, [isLoggedIn, isSuccess, dispatch, navigate]);
 
   return (
-    <div className={`container ${styles.auth}`}>
+    <div className={`register-page ${styles.auth}`}>
       {isLoading && <Loader />}
-      <Card>
-        <div className={styles.form}>
-          <div className="--flex-center">
-            <TiUserAddOutline size={35} color="#999" />
-          </div>
-          <h2>Register</h2>
-
-          <form onSubmit={registerUser}>
+      <div className="register-card">
+        <div className="--flex-center">
+          <TiUserAddOutline size={35} color="#999" />
+        </div>
+        <h2>Register</h2>
+        <p>Fill in the details to create a new account</p>
+        <form className="register-form" onSubmit={registerUser}>
+          <div className="form-group">
+            <label htmlFor="name">Name</label>
             <input
               type="text"
-              placeholder="Name"
-              required
+              id="name"
+              placeholder="Enter your name"
               name="name"
               value={name}
               onChange={handleInputChange}
+              required
             />
+          </div>
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
             <input
               type="email"
-              placeholder="Email"
-              required
+              id="email"
+              placeholder="Enter your email"
               name="email"
               value={email}
               onChange={handleInputChange}
+              required
             />
-            <PasswordInput
-              placeholder="Password"
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              placeholder="Enter your password"
               name="password"
               value={password}
               onChange={handleInputChange}
+              required
             />
-            <PasswordInput
-              placeholder="Confirm Password"
+          </div>
+          <div className="form-group">
+            <label htmlFor="password2">Confirm Password</label>
+            <input
+              type="password"
+              id="password2"
+              placeholder="Confirm your password"
               name="password2"
               value={password2}
               onChange={handleInputChange}
-              onPaste={(e) => {
-                e.preventDefault();
-                toast.error("Cannot paste into input field");
-                return false;
-              }}
+              required
             />
-
-            {/* Password Strength */}
-            <Card cardClass={styles.group}>
-              <ul className="form-list">
-                <li>
-                  <span className={styles.indicator}>
-                    {switchIcon(uCase)}
-                    &nbsp; Lowercase & Uppercase
-                  </span>
-                </li>
-                <li>
-                  <span className={styles.indicator}>
-                    {switchIcon(num)}
-                    &nbsp; Number (0-9)
-                  </span>
-                </li>
-                <li>
-                  <span className={styles.indicator}>
-                    {switchIcon(sChar)}
-                    &nbsp; Special Character (!@#$%^&*)
-                  </span>
-                </li>
-                <li>
-                  <span className={styles.indicator}>
-                    {switchIcon(passLength)}
-                    &nbsp; At least 6 Character
-                  </span>
-                </li>
-              </ul>
-            </Card>
-
-            <button type="submit" className="--btn --btn-primary --btn-block">
-              Register
-            </button>
-          </form>
-
-          <span className={styles.register}>
-            <Link to="/">Home</Link>
-            <p> &nbsp; Already have an account? &nbsp;</p>
+          </div>
+          <button type="submit" className="btn register-btn">
+            Register
+          </button>
+        </form>
+        <div className="links">
+          <p>
+            Already have an account?{" "}
             <Link to="/login">Login</Link>
-          </span>
+          </p>
         </div>
-      </Card>
+      </div>
     </div>
   );
 };

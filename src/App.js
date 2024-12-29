@@ -8,7 +8,7 @@ import Register from "./pages/auth/Register";
 import Reset from "./pages/auth/Reset";
 // import Verify from "./pages/auth/Verify";
 import ChangePassword from "./pages/changePassword/ChangePassword";
-import Home from "./pages/home/Home";
+// import Home from "./pages/home/Home";
 import Profile from "./pages/profile/Profile";
 import UserList from "./pages/userList/UserList";
 import axios from "axios";
@@ -48,7 +48,7 @@ function App() {
               path="/"
               element={
                 <Layout>
-                  <Home />
+                  <Login />
                 </Layout>
               }
             />

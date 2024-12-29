@@ -1,36 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Home.scss";
-import Header from "../../components/header/Header";
-import loginImg from "../../assets/login.svg";
-import { Link } from "react-router-dom";
 
 const Home = () => {
-  return (
-    <div>
-      <section className="container hero">
-        <div className="hero-text">
-          <h2>Ultimate MERN Stack Authentication System</h2>
-          <p>
-            Learn and Master Authentication and Authorization using MERN Stack.
-          </p>
-          <p>
-            Implement User Regisration, Login, Password Reset, Social Login,
-            User Permissions etc.
-          </p>
-          <div className="hero-buttons --flex-start">
-            <button className="--btn --btn-danger">
-              <Link to="/register">Register</Link>
-            </button>
-            <button className="--btn --btn-primary">
-              <Link to="/login">Login</Link>
-            </button>
-          </div>
-        </div>
+  const [isLogin, setIsLogin] = useState(true);
 
-        <div className="hero-image">
-          <img src={loginImg} alt="Auth" />
-        </div>
-      </section>
+  const toggleForm = () => {
+    setIsLogin(!isLogin);
+  };
+
+  return (
+    <div className="auth-container">
+      <div className="auth-card">
+        <h2>{isLogin ? "Welcome Back" : "Join Us"}</h2>
+        <p>{isLogin ? "Log in to access your personalized dashboard." : "Sign up to explore all the features based on your role."}</p>
+
+        <form className="auth-form">
+          {!isLogin && (
+            <div className="form-group">
+              <label htmlFor="name">Full Name</label>
+              <input type="text" id="name" placeholder="Enter your full name" />
+            </div>
+          )}
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input type="email" id="email" placeholder="Enter your email" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input type="password" id="password" placeholder="Enter your password" />
+          </div>
+
+          <button type="submit" className="--btn --btn-primary">
+            {isLogin ? "Login" : "Register"}
+          </button>
+        </form>
+
+        <p className="toggle-text">
+          {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+          <span onClick={toggleForm} className="toggle-link">
+            {isLogin ? "Sign up" : "Log in"}
+          </span>
+        </p>
+      </div>
     </div>
   );
 };

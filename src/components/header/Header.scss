@@ -17,6 +17,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
 
     .logo {
       color: #fff;
@@ -24,77 +25,112 @@
       justify-content: center;
       align-items: center;
       font-size: 2.5rem;
-      cursor: pointer;
-      letter-spacing: 2px;
       font-weight: bold;
+      letter-spacing: 2px;
+      cursor: pointer;
       transition: color 0.3s ease-in-out;
 
       &:hover {
-        color: #ff7f50;  /* Change color on hover */
+        color: #ff7f50;
       }
-    }
-  }
 
-  .nav-links {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;  /* Increased gap for better spacing between items */
-
-    & li a {
-      color: #fff;
-      font-size: 1.1rem;
-      font-weight: 500;
-      padding: 5px 10px;
-      transition: all 0.3s ease-in-out;
-
-      &:hover {
-        background-color: #ff7f50;  /* Add background color on hover */
-        border-radius: 5px;
-        color: #fff;
+      span {
+        display: flex;
+        align-items: center;
+        gap: 8px;
       }
     }
 
-    & > * {
-      margin-left: 1rem;
-      color: #fff;
-    }
-
-    /* For buttons */
-    .--btn {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
+    /* Hamburger menu toggle */
+    .nav-toggle {
+      display: none;
       cursor: pointer;
-      transition: all 0.3s ease-in-out;
-      font-weight: bold;
-    }
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 10;
 
-    .--btn-primary {
-      background-color: #ff7f50;
-      color: #fff;
-      &:hover {
-        background-color: #ff6347;
+      @media (max-width: 768px) {
+        display: block;
       }
     }
 
-    .--btn-secondary {
-      background-color: #030b6b;
-      color: #fff;
-      &:hover {
-        background-color: #1e2d57;
-      }
-    }
-  }
-
-  /* Responsive styling */
-  @media (max-width: 768px) {
     .nav-links {
-      display: none;  /* Hide the links on small screens */
-    }
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      list-style: none;
 
-    .logo {
-      font-size: 2rem;
+      li {
+        padding: 0 5px;
+      }
+
+      & li a {
+        color: #fff;
+        font-size: 1.1rem;
+        font-weight: 500;
+        padding: 5px 10px;
+        transition: all 0.3s ease-in-out;
+
+        &:hover {
+          background-color: #ff7f50;  /* Add background color on hover */
+          border-radius: 5px;
+          color: #fff;
+        }
+      }
+
+      & > * {
+        margin-left: 1rem;
+      }
+
+      /* For buttons */
+      .--btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        font-weight: bold;
+      }
+
+      .--btn-primary {
+        background-color: #ff7f50;
+        color: #fff;
+        &:hover {
+          background-color: #ff6347;
+        }
+      }
+
+      .--btn-secondary {
+        background-color: #030b6b;
+        color: #fff;
+        &:hover {
+          background-color: #1e2d57;
+        }
+      }
+
+      /* Mobile responsive */
+      @media (max-width: 768px) {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 80px;
+        right: 0;
+        background: #6a11cb;
+        width: 100%;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+
+        &.show {
+          display: flex;
+        }
+
+        li {
+          padding: 10px 0;
+        }
+      }
     }
   }
 }

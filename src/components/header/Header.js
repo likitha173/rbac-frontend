@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Header.scss";
 import { BiLogIn } from "react-icons/bi";
-import { FaUserCircle } from "react-icons/fa";
+import { FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout, RESET } from "../../redux/features/auth/authSlice";
@@ -12,6 +12,7 @@ import { AdminAuthorLink } from "../protect/hiddenLink";
 const activeLink = ({ isActive }) => (isActive ? "active" : "");
 
 const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -25,6 +26,10 @@ const Header = () => {
     navigate("/login");
   };
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <header className="navbar">
       <nav>
@@ -32,10 +37,15 @@ const Header = () => {
           <span>RBAC</span>
         </div>
 
-        <ul className="nav-links">
+        {/* Hamburger menu */}
+        <div className="nav-toggle" onClick={toggleMenu}>
+          {isMenuOpen ? <FaTimes size={30} /> : <FaBars size={30} />}
+        </div>
+
+        <ul className={`nav-links ${isMenuOpen ? "show" : ""}`}>
           {/* Show profile and logout for logged-in users */}
           <ShowOnLogin>
-            <li className="--flex-center">
+            <li className="profile-link">
               <FaUserCircle size={20} />
               <UserName />
             </li>

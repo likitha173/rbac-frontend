@@ -1,49 +1,96 @@
-.hero {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #eee;
-    min-height: 80vh;
-  }
-  
-  .hero-text {
-    width: 50%;
-    & > * {
-      color: #333;
-      margin-bottom: 2rem;
-    }
-    & > h2 span {
-      display: block;
-    }
-    & .hero-buttons a {
-      color: #fff;
-    }
-  }
-  .hero-image {
-    width: 50%;
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+  padding: 2rem;
+
+  .auth-card {
+    background-color: #ffffff;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
     text-align: center;
-  }
-  .hero-image img {
-    width: 80%;
-  }
-  @media screen and (max-width: 600px) {
-    .hero {
-      flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     }
-  
-    .hero-text {
+
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    p {
+      margin-bottom: 1.5rem;
+      color: #666;
+    }
+
+    .auth-form {
       display: flex;
-      justify-content: center;
-      align-items: center;
       flex-direction: column;
-      width: 100%;
-      margin: auto;
-      text-align: center;
+
+      .form-group {
+        margin-bottom: 1.5rem;
+
+        label {
+          display: block;
+          margin-bottom: 0.5rem;
+          font-size: 0.9rem;
+          color: #555;
+        }
+
+        input {
+          width: 100%;
+          padding: 0.75rem;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          font-size: 1rem;
+
+          &:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+          }
+        }
+      }
+
+      .--btn-primary {
+        background-color: #007bff;
+        color: white;
+        text-transform: uppercase;
+        font-weight: bold;
+        padding: 0.75rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #0056b3;
+        }
+      }
     }
-    .hero-image {
-      width: 100%;
-      &img {
-        width: 100%;
+
+    .toggle-text {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: #555;
+
+      .toggle-link {
+        color: #007bff;
+        cursor: pointer;
+        font-weight: bold;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
   }
+}
